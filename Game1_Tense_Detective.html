@@ -1,0 +1,42 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Game 1: Tense Detective</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f3f6fb;color:#222}
+.w{max-width:760px;margin:0 auto;padding:16px}
+h1{color:#0B2F6B;margin:8px 0}
+.info{background:#fff;border-left:6px solid #0B2F6B;padding:10px 14px;border-radius:6px;font-size:14px;line-height:1.5}
+.card{background:#fff;border-radius:12px;padding:22px;margin:14px 0;box-shadow:0 2px 6px #0002;text-align:center}
+.s{font-size:24px;font-weight:bold;color:#0B2F6B;margin:10px 0 18px}
+.b{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button{font-size:16px;padding:12px 16px;border:0;border-radius:8px;cursor:pointer;color:#fff;background:#0B2F6B;flex:1;min-width:200px}
+button.ps{background:#00796B}button.sp{background:#1565C0}button.pp{background:#8E24AA}
+button:disabled{opacity:.5;cursor:default}
+#fb{min-height:48px;font-size:16px;margin-top:14px}
+.ok{color:#1b7a2b}.no{color:#c62828}
+.bar{height:10px;background:#dde;border-radius:5px;overflow:hidden}.bar div{height:100%;background:#0B2F6B;width:0}
+#next{display:none;margin-top:10px;background:#555;flex:none;min-width:140px}
+</style></head><body><div class="w">
+<h1>🔍 Tense Detective</h1>
+<div class="info"><b>Learning objective:</b> choose the right tense – present simple (facts, habits), simple past (finished, time given), present perfect (no time given / up to now).<br><b>Level:</b> 1st year secondary (A2). <b>Skill:</b> grammar in context (reading). <b>Teacher tip:</b> play on the board after Task 8; ask “Why?” after each answer, using the clue words. Learners often say “I have seen him yesterday” – stress that a finished time word means simple past.</div>
+<div class="card"><div class="bar"><div id="pg"></div></div><p id="cnt"></p><div class="s" id="q"></div>
+<div class="b"><button class="ps" data-a="ps">Present simple<br><small>facts and habits</small></button><button class="sp" data-a="sp">Simple past<br><small>finished, time given</small></button><button class="pp" data-a="pp">Present perfect<br><small>no time / up to now</small></button></div>
+<div id="fb"></div><div class="b"><button id="next">Next ▶</button></div></div></div>
+<script>
+const Q=[
+["Amel <u>lives</u> in Tunis.","ps","Fact about now: present simple."],
+["She <u>put</u> a video online when she was fifteen.","sp","“when she was fifteen” = finished time."],
+["She <u>has won</u> three major awards.","pp","No time given: present perfect."],
+["She <u>avoids</u> interviews.","ps","A habit: present simple."],
+["Her first song <u>reached</u> number two in 1998.","sp","“in 1998” = finished time."],
+["She <u>has returned</u> with a new album.","pp","News with no time: present perfect."],
+["Karim <u>plays</u> for a club in Tunis.","ps","A fact: present simple."],
+["Last season he <u>scored</u> twenty goals.","sp","“Last season” = finished time."],
+["So far he <u>has won</u> two awards.","pp","“So far” = up to now."],
+["Rami <u>was</u> born in Gabès in 2010.","sp","“in 2010” = finished time."],
+["Fame <u>has</u> a good and a bad side.","ps","A general truth: present simple."],
+["She <u>has not become</u> a star yet.","pp","“yet” = up to now."]];
+let i=0,sc=0,done=false;const $=id=>document.getElementById(id);
+function show(){done=false;$('q').innerHTML=Q[i][0];$('cnt').textContent=`Case ${i+1} of ${Q.length} • Score ${sc}`;$('pg').style.width=(i/Q.length*100)+'%';$('fb').textContent='';$('next').style.display='none';document.querySelectorAll('[data-a]').forEach(b=>b.disabled=false)}
+document.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{if(done)return;done=true;const ok=b.dataset.a===Q[i][1];if(ok)sc++;$('fb').innerHTML=(ok?'<span class=ok>✔ Correct! ':'<span class=no>✘ Not quite. ')+Q[i][2]+'</span>';document.querySelectorAll('[data-a]').forEach(x=>x.disabled=true);$('next').style.display='inline-block';$('next').textContent=i==Q.length-1?'Finish':'Next ▶'});
+$('next').onclick=()=>{i++;if(i<Q.length)show();else{$('pg').style.width='100%';$('q').textContent=`Case closed! ${sc} / ${Q.length}`;$('fb').textContent=sc>=10?'Super detective! 🏅':sc>=7?'Good work – try again for full marks.':'Look at the clue words and play again.';$('next').textContent='Play again';$('next').onclick=()=>{i=0;sc=0;show();$('next').onclick=nx};document.querySelectorAll('[data-a]').forEach(x=>x.disabled=true)}};
+const nx=$('next').onclick;show();
+</script></body></html>
